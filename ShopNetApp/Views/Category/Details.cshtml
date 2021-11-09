@@ -1,0 +1,23 @@
+﻿@model ShopNetApp.Models.Category
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<table class="table mt-1">
+    <tr>
+        <th>Category Id</th>
+        <td>@Model.Id</td>
+    </tr>
+    <tr>
+        <th>Category Name</th>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <th>Display Order</th>
+        <td>@Model.DisplayOrder</td>
+    </tr>
+</table>
+

@@ -1,0 +1,44 @@
+﻿@model ShopNetApp.Models.Category
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create Category</h2>
+<br/>
+
+<!-- FORM -->
+<!--=======-->
+<!-- ACTION: /Category/Create | Method:Post-->
+@using (Html.BeginForm("Create","Category", FormMethod.Post))
+{
+
+    <div class="form-row">
+        <!-- CATEGORY NAME-->
+        <div class="form-group col-md-4">
+             @Html.LabelFor(Model=>Model.Name)
+             @Html.TextBoxFor(Model=>Model.Name, new { @class = "form-control", placeholder = "Enter Category Name" })
+        </div>
+    </div>
+
+    <div class="form-row">
+        <!-- ORDER Details-->
+        <div class="form-group col-md-4">
+            @Html.LabelFor(Model=>Model.DisplayOrder)
+            @Html.TextBoxFor(Model => Model.DisplayOrder, new { @class = "form-control", placeholder = "Enter Order Id" })
+        </div>
+    </div>
+
+
+
+    <!-- CREATE -->
+    <button type="submit" class="btn btn-success mx-2">Create</button>
+    
+    <!-- CANCEL-->
+    <a class="btn btn-danger" href="@Url.Action("Index","Category")">Cancel</a>
+}
+
+
+
+
+
