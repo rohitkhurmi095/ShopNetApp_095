@@ -4,36 +4,50 @@
     ViewData["Title"] = "Create";
 }
 
+<style>
+    .validation-summary-errors {
+        color: navy !important;
+    }
+</style>
+
 <h2>Create Category</h2>
-<br/>
+<br />
 
 <!-- FORM -->
 <!--=======-->
 <!-- ACTION: /Category/Create | Method:Post-->
-@using (Html.BeginForm("Create","Category", FormMethod.Post))
+@using (Html.BeginForm("Create", "Category", FormMethod.Post))
 {
 
     <div class="form-row">
         <!-- CATEGORY NAME-->
         <div class="form-group col-md-4">
-             @Html.LabelFor(Model=>Model.Name)
-             @Html.TextBoxFor(Model=>Model.Name, new { @class = "form-control", placeholder = "Enter Category Name" })
+            @Html.LabelFor(Model => Model.Name)
+            @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control", placeholder = "Enter Category Name" })
+            <!-- Error Message -->
+            <span class="field-validation-valid text-danger">@Html.ValidationMessageFor(Model => Model.Name)</span>
         </div>
     </div>
 
     <div class="form-row">
         <!-- ORDER Details-->
         <div class="form-group col-md-4">
-            @Html.LabelFor(Model=>Model.DisplayOrder)
-            @Html.TextBoxFor(Model => Model.DisplayOrder, new { @class = "form-control", placeholder = "Enter Order Id" })
+            @Html.LabelFor(Model => Model.DisplayOrder)
+            @Html.TextBoxFor(Model => Model.DisplayOrder, new {@type = "number", @class = "form-control", placeholder = "Enter Order Id"})
+            <!-- Error Message -->
+            <span class="field-validation-valid text-danger">@Html.ValidationMessageFor(Model => Model.DisplayOrder)</span>
         </div>
     </div>
+
+
+    <!-- VALIDATION SUMMARY(DISPLAY ALL ERRORS as List) -->
+    @Html.ValidationSummary()
 
 
 
     <!-- CREATE -->
     <button type="submit" class="btn btn-success mx-2">Create</button>
-    
+
     <!-- CANCEL-->
     <a class="btn btn-danger" href="@Url.Action("Index","Category")">Cancel</a>
 }

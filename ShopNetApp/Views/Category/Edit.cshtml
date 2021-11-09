@@ -4,22 +4,30 @@
     ViewData["Title"] = "Edit";
 }
 
+<style>
+    .validation-summary-errors {
+        color: navy !important;
+    }
+</style>
+
 <h2>Edit Category</h2>
-<br/>
+<br />
 
 <!-- FORM -->
 <!--=======-->
 <!-- ACTION: Category/Update/Id | Method:Post-->
-@using (Html.BeginForm("Update", "Category",new {Id = @Model.Id },FormMethod.Post))
+@using (Html.BeginForm("Edit", "Category", new { Id = @Model.Id }, FormMethod.Post))
 {
     <!--** PASS CategoryId as Hidden Field**-->
-    <input type="hidden"  value="@Model.Id" name="CategoryId"/>
+    <input type="hidden" value="@Model.Id" name="CategoryId" />
 
     <div class="form-row">
         <!-- CATEGORY NAME-->
         <div class="form-group col-md-4">
             @Html.LabelFor(Model => Model.Name)
             @Html.TextBoxFor(Model => Model.Name, Model.Name, new { @class = "form-control", placeholder = "Enter Category Name" })
+            <!-- Error Message -->
+            <span class="field-validation-valid text-danger">@Html.ValidationMessageFor(Model => Model.Name)</span>
         </div>
     </div>
 
@@ -27,9 +35,15 @@
         <!-- ORDER Details-->
         <div class="form-group col-md-4">
             @Html.LabelFor(Model => Model.DisplayOrder)
-            @Html.TextBoxFor(Model => Model.DisplayOrder, Model.DisplayOrder.ToString(), new { @class = "form-control", placeholder = "Enter Order Id" })
+            @Html.TextBoxFor(Model => Model.DisplayOrder, Model.DisplayOrder.ToString(), new { @type = "number", @class = "form-control", placeholder = "Enter Order Id" })
+            <!-- Error Message -->
+            <span class="field-validation-valid text-danger">@Html.ValidationMessageFor(Model => Model.DisplayOrder)</span>
         </div>
     </div>
+
+
+    <!-- VALIDATION SUMMARY(DISPLAY ALL ERRORS as List) -->
+    @Html.ValidationSummary()
 
 
 

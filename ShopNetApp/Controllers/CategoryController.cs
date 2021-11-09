@@ -102,9 +102,11 @@ namespace ShopNetApp.Controllers
                 //Redirect -> Categories after adding new Category
                 return RedirectToAction("Index", "Category");
             }
-
-            //Else return same view
-            return View(category);
+            else
+            {
+                //Else return same view
+                return View(category);
+            }
         }
 
 
@@ -140,7 +142,7 @@ namespace ShopNetApp.Controllers
         //2.UPDATE Category - CategoryId (from EDIT CategoryForm)
         //-----------------------------
         [HttpPost]
-        public IActionResult Update(int? Id,Category c)
+        public IActionResult Edit(int? Id,Category c)
         {
             //Find Category by Id
             var category = _dbContext.Category.Where(c => c.Id == Id).FirstOrDefault();
@@ -164,9 +166,11 @@ namespace ShopNetApp.Controllers
                 //Redirect -> Categories after adding new Category
                 return RedirectToAction("Index", "Category");
             }
-
-            //Else -> return same view
-            return View(category);
+            else
+            {
+                //Else -> return same view
+                return View(category);
+            }
         }
 
 
