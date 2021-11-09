@@ -34,6 +34,10 @@ namespace ShopNetApp
             //------------------
             //Connection string from appsettings.json
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
+
+            //Cloudscribe.web.pagination
+            //---------------------------
+            services.AddCloudscribePagination();
         }
 
 

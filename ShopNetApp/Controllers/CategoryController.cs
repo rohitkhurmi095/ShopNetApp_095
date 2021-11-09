@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using cloudscribe.Pagination.Models;
 
 namespace ShopNetApp.Controllers
 {
@@ -22,10 +24,19 @@ namespace ShopNetApp.Controllers
         //===================
         //GET All Categories + SEARCH
         //===================
-        public IActionResult Index(string search="")
+        //pageNumber = currentPageNumber (Default=1)
+        //pageSize = no.of.recordsPerPage (Default=5)
+        public IActionResult Index(string search="",int pageNumber=1,int pageSize=5)
         {
             //Get List(all categories) from DbContext
             List<Category> categories;
+
+            //PAGINATION
+            //-----------
+            //cloudscribe.web.pagination
+            //query = query.Skip(pageSize*pageNumber).Take(PageSize).AsNoTracking().ToList();
+            //pagedList<T> result = new PagedList<T>(Data,TotalItems,PageNumber,PageSize)
+            var offset = (pageSize * pageNumber) - pageSize;
 
             //FILTER BY SEARCH by categoryName
             //-----------------
@@ -34,17 +45,34 @@ namespace ShopNetApp.Controllers
 
             //If search term is null or empty => Disply all results
             //Else display only searchResult
+            //AsNoTracking() => if we are only reading query it gives better perfomance
+            //No need to track the query
             if (!string.IsNullOrEmpty(search)){ 
-                categories = _dbContext.Category.Where(c => c.Name.Contains(search)).ToList();
+                //show searched result with Pagination
+                categories = _dbContext.Category.Where(c => c.Name.Contains(search)).Skip(offset).Take(pageSize).AsNoTracking().ToList();
             }
             else
             {
-                categories = _dbContext.Category.ToList();
+                //Show all results with pagination
+                categories = _dbContext.Category.AsNoTracking().Skip(offset).Take(pageSize).ToList();
             }
 
-            //return categories -> View
-            return View(categories);
+
+            //PAGED LIST
+            //-----------
+            var result = new PagedResult<Category>
+            {
+                Data = categories,
+                TotalItems = _dbContext.Category.Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            
+            //return PagedList<categories> -> View
+            return View(result);
         }
+
+
 
         //======================
         //GET Category by Id
