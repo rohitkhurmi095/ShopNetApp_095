@@ -1,0 +1,45 @@
+﻿@model ShopNetApp.Models.ApplicationType
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<style>
+    .validation-summary-errors {
+        color: navy !important;
+    }
+</style>
+
+<h2>Create Application Type</h2>
+<br />
+
+<!-- FORM -->
+<!--=======-->
+<!-- ACTION: /ApplicationType/Create | Method:Post-->
+@using (Html.BeginForm("Create", "ApplicationType", FormMethod.Post))
+{
+
+    <div class="form-row">
+        <!-- NAME-->
+        <div class="form-group col-md-4">
+            @Html.LabelFor(Model => Model.Name)
+            @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control", placeholder = "Enter ApplicationType Name" })
+            <!-- Error Message -->
+            <span class="field-validation-valid text-danger">@Html.ValidationMessageFor(Model => Model.Name)</span>
+        </div>
+    </div>
+
+    <!-- VALIDATION SUMMARY(DISPLAY ALL ERRORS as List) -->
+    @Html.ValidationSummary()
+
+
+
+    <!-- CREATE -->
+    <button type="submit" class="btn btn-success mx-2">Create</button>
+
+    <!-- CANCEL-->
+    <a class="btn btn-danger" href="@Url.Action("Index","ApplicationType")">Cancel</a>
+}
+
+
+

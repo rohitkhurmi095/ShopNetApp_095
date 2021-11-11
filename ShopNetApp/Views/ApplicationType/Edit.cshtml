@@ -1,0 +1,50 @@
+﻿@model ShopNetApp.Models.ApplicationType
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<style>
+    .validation-summary-errors {
+        color: navy !important;
+    }
+</style>
+
+<h2>Edit Application Type</h2>
+<br />
+
+<!-- FORM -->
+<!--=======-->
+<!-- ACTION: ApplicationType/Edit/Id | Method:Post-->
+@using (Html.BeginForm("Edit", "ApplicationType", new { Id = @Model.Id }, FormMethod.Post))
+{
+    <!--** PASS CategoryId as Hidden Field**-->
+    <input type="hidden" value="@Model.Id" name="ApplicationTypeId" />
+
+    <div class="form-row">
+        <!-- NAME-->
+        <div class="form-group col-md-4">
+            @Html.LabelFor(Model => Model.Name)
+            @Html.TextBoxFor(Model => Model.Name, Model.Name, new { @class = "form-control", placeholder = "Enter ApplicationType Name" })
+            <!-- Error Message -->
+            <span class="field-validation-valid text-danger">@Html.ValidationMessageFor(Model => Model.Name)</span>
+        </div>
+    </div>
+
+
+    <!-- VALIDATION SUMMARY(DISPLAY ALL ERRORS as List) -->
+    @Html.ValidationSummary()
+
+
+
+    <!-- UPDATE -->
+    <button type="submit" class="btn btn-success mx-2">Update</button>
+
+    <!-- CANCEL-->
+    <a class="btn btn-danger" href="@Url.Action("Index","ApplicationType")">Cancel</a>
+}
+
+
+
+
+

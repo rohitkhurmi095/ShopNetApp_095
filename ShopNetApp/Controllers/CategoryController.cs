@@ -14,7 +14,7 @@ namespace ShopNetApp.Controllers
     {
         //DbContext
         //----------
-        private ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
         public CategoryController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -177,7 +177,7 @@ namespace ShopNetApp.Controllers
         public IActionResult Edit(int? Id,Category c)
         {
             //Find Category by Id
-            var category = _dbContext.Category.Where(c => c.Id == Id).FirstOrDefault();
+            var category = _dbContext.Category.AsNoTracking().Where(c => c.Id == Id).FirstOrDefault();
 
             //If category not found
             if(category == null)
@@ -188,10 +188,13 @@ namespace ShopNetApp.Controllers
             //If valid Form state
             if (ModelState.IsValid)
             {
-                //UPDATE category In Db
+                //UPDATE entities In Db
                 category.Name = c.Name;
                 category.DisplayOrder = c.DisplayOrder;
-                
+
+                //UpdateDb 
+                _dbContext.Category.Update(category);
+
                 //Save Db
                 _dbContext.SaveChanges();
 

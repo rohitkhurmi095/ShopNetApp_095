@@ -1,4 +1,4 @@
-﻿@model ShopNetApp.Models.Category
+﻿@model ShopNetApp.Models.ApplicationType
 
 @{
     ViewData["Title"] = "Delete";
@@ -6,37 +6,29 @@
 
 <h2>Delete Category</h2>
 
-<form action="/Category/Delete/@Model.Id" method="Post">
+<form action="/ApplicationType/Delete/@Model.Id" method="Post">
 
     <!--**  PASS CategoryId as Hidden **-->
-    <input type="hidden" value="@Model.Id" name="CategoryId" />
-
+    <input type="hidden" value="@Model.Id" name="ApplicationTypeId" />
 
 
     <div class="row">
         <div class="col-md-6">
-
             <table class="table mt-1">
                 <tr>
-                    <th style="width:40%;">Category Id</th>
+                    <th style="width:40%;">Application Type Id</th>
                     <td style="width:60%;">@Model.Id</td>
                 </tr>
                 <tr>
-                    <th style="width:40%;">Category Name</th>
+                    <th style="width:40%;">Application Type Name</th>
                     <td style="width:60%;">@Model.Name</td>
                 </tr>
-                <tr>
-                    <th style="width:40%;">Display Order</th>
-                    <td style="width:60%;">@Model.DisplayOrder</td>
-                </tr>
             </table>
-
         </div>
     </div>
-   
 
 
     <div>Are you sure to delete this category?</div>
     <button type="submit" class="btn btn-secondary">Delete</button>
-    <a class="btn btn-danger" href="@Url.Action("Index","Category")">Cancel</a>
+    <a class="btn btn-danger" href="@Url.Action("Index","ApplicationType")">Cancel</a>
 </form>

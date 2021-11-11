@@ -1,0 +1,78 @@
+﻿@model cloudscribe.Pagination.Models.PagedResult<ApplicationType>
+
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Controller"] = "ApplicationType";
+    ViewData["Action"] = "Index";
+}
+
+
+<div class="row">
+    <!--Add New Category Button -->
+    <div class="col-sm-8">
+        <a class="btn btn-primary" href="@Url.Action("Create", "ApplicationType")">Add New Application Type</a>
+    </div>
+
+    <!-- SEARCH BOX -->
+    <form class="form-inline search-box mt-2" action="/ApplicationType/Index">
+        <i class="material-icons">&#xE8B6;</i>
+
+        <!--<input type="search" class="form-control" id="search" name="search" value="@ViewBag.Search" placeholder="Search...">-->
+
+        @Html.TextBox("Search", @ViewBag.Search as string, new { @class = "form-control", placeholder = "Search" })
+    </form>
+</div>
+
+
+<div>
+    @if (Model.Data.Count() > 0)
+    {
+        <!-- TABLE -->
+        <table class="table mt-4 table-responsive">
+            <thead>
+                <tr class="table-secondary">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th style="width:10%" colspan="3" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Data)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+
+                        <!-- DETAILS|Edit|Delete Buttons-->
+                        <td><a class="btn btn-light text-secondary" style="border-radius:50%;" href="/ApplicationType/Details/@item.Id"><i class="far fa-eye"></i></a></td>
+                        <td><a class="btn btn-primary text-white" style="border-radius:50%;" href="/ApplicationType/Edit/@item.Id"><i class="far fa-edit"></i></a></td>
+                        <td><a class="btn btn-danger text-white" style="border-radius:50%;" href="/ApplicationType/Delete/@item.Id"><i class="far fa-trash-alt"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <br /><br />
+        <!-- PAGINATION -->
+        <!--============-->
+        <div class="clearfix">
+            <!-- PageNumber -->
+            <div class="hint-text">Page <b>@(Model.TotalItems < Model.PageNumber ? 0 : Model.PageNumber) </b> out of <b>@ViewBag.TotalPages</b></div>
+
+            <!-- Pagination Numbers-->
+            <div class="pager pagination">
+                <!-- Pagination PartialView -->
+                <!-- Pass Model,ViewDate to PaginationPartial View-->
+                <partial name="_PaginationPartial" view-data="ViewData" model="Model" class="page-item">
+            </div>
+        </div>
+    }
+    else
+    {
+        <br /><br />
+        <b class="text-danger">No Application Type exists!</b>
+    }
+</div>
+
+
