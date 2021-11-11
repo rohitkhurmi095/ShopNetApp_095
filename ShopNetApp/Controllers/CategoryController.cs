@@ -36,6 +36,7 @@ namespace ShopNetApp.Controllers
             //cloudscribe.web.pagination
             //query = query.Skip(pageSize*pageNumber).Take(PageSize).AsNoTracking().ToList();
             //pagedList<T> result = new PagedList<T>(Data,TotalItems,PageNumber,PageSize)
+            //TotalPages = TotalItems/PageSize
             var offset = (pageSize * pageNumber) - pageSize;
 
             //FILTER BY SEARCH by categoryName
@@ -67,7 +68,10 @@ namespace ShopNetApp.Controllers
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
-            
+
+            //TotalPages = TotalItems/PageSize
+            ViewBag.TotalPages = (int)Math.Ceiling(_dbContext.Category.Count() / (double)pageSize);
+
             //return PagedList<categories> -> View
             return View(result);
         }

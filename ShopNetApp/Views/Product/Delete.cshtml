@@ -1,0 +1,91 @@
+﻿@model ShopNetApp.Models.Product
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete Product</h2>
+<br />
+<br />
+
+<form action="/Product/Delete/@Model.Id" method="Post">
+
+    <!--**  PAS ProductId as Hidden **-->
+    <input type="hidden" value="@Model.Id" name="ProductId" />
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <img class="img img-responsive mt-4" src="@WC.ImagePath@Model.Image" width="320" height="280" style="border:1px blue solid;" />
+            <br /><br />
+        </div>
+
+        <div class="col-md-2">
+
+        </div>
+
+        <div class="col-md-6">
+            <table class="table mt-1">
+                <tr>
+                    <th>Product Id</th>
+                    <td>@Model.Id</td>
+                </tr>
+                <tr>
+                    <th>Product Name</th>
+                    <td>@Model.Name</td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td>@Model.Price</td>
+                </tr>
+                <tr>
+                    <th>Category</th>
+                    <td>@Model.Category.Name</td>
+                </tr>
+                <tr>
+                    <th>Application Type</th>
+                    <td>@Model.ApplicationType.Name</td>
+                </tr>
+            </table>
+
+            <div>
+                <div>Are you sure to delete this Product?</div>
+                <button type="submit" class="btn btn-secondary">Delete</button>
+                <a class="btn btn-danger" href="@Url.Action("Index","Product")">Cancel</a>
+            </div>
+            <br /><br />
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table style="padding:2px;">
+                <tr>
+                    <td>
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.ShortDescription))
+                            {
+                                <b>Short Description:</b>
+                                <p>@Model.ShortDescription</p>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.Description))
+                            {
+                                <b>Description:</b>
+                                <p>@Html.Raw(@Model.Description)</p>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</form>
+

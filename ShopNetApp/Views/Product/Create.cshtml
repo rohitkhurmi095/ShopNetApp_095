@@ -1,0 +1,153 @@
+﻿@model ShopNetApp.Models.Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h2>Create Product</h2>
+<br />
+
+
+<!--================-->
+<!-- ADD PRODUCT FORM -->
+<!--==================-->
+@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="border p-3">
+
+        <div class="form-row">
+
+            <!-- Name-->
+            <div class="form-group col-md-6">
+                @Html.LabelFor(Modle => Model.Name)
+                @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control", placeholder = "Product Name" })
+                <!-- Error Message -->
+                <span class="text-danger">@Html.ValidationMessageFor(Model => Model.Name)</span>
+            </div>
+
+            <!-- PRICE-->
+            <div class="form-group col-md-6">
+                @Html.LabelFor(Modle => Model.Price)
+                @Html.TextBoxFor(Model => Model.Price, new { @class = "form-control", placeholder = "Product Price" })
+                <!-- Error Message -->
+                <span class="text-danger">@Html.ValidationMessageFor(Model => Model.Price)</span>
+            </div>
+        </div>
+
+
+
+        <!-- DYMAMIC DROPDOWN -->
+        <div class="form-row">
+
+            <!-- CategoryId: NAME DROPDOWN -->
+            <div class="form-group col-md-6">
+                @Html.LabelFor(Model => Model.CategoryId)
+                @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(ViewBag.Categories, "Id", "Name"),
+     "Please Select Category", new { @class = "form-control" })
+                <!-- ErrorMesssage-->
+                <span class="text-danger">@Html.ValidationMessageFor(Model => Model.CategoryId)</span>
+            </div>
+
+            <!-- ApplicationTypeId:NAME DROPDOWN:-->
+            <div class="form-group col-md-6">
+                @Html.LabelFor(Model => Model.ApplicationTypeId)
+                @Html.DropDownListFor(Model => Model.ApplicationTypeId, new SelectList(ViewBag.ApplicationTypes, "Id", "Name"),
+    "Please Select Application Type", new { @class = "form-control" })
+                <!-- ErrorMesssage-->
+                <span class="text-danger">@Html.ValidationMessageFor(Model => Model.ApplicationTypeId)</span>
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+
+                <!--IMAGE UPLOAD -->
+                <div class="form-row">
+
+                    <label for="Image">Image</label>
+                    <!-- File Uploader-->
+                    <input type="file" name="files" id="uploadBox" multiple class="form-control-file" onchange="imagePreview(this);" />
+
+                    <!-- Upload Preview-->
+                    <img id="imgPreview" alt="uploadPreview" height="150" width="150" class="mt-1" src="~/images/product/default.jpg" />
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-row mt-3">
+                    <!-- CREATE -->
+                    <button type="submit" class="btn btn-success mx-2" onclick="return validateInput()">Create</button>
+
+                    <!-- CANCEL-->
+                    <a class="btn btn-danger" href="@Url.Action("Index","Product")">Cancel</a>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <!--SHORT DESCRIPTION-->
+                <div class="form-row">
+                    @Html.LabelFor(Model => Model.ShortDescription)
+                    @Html.TextAreaFor(Model => Model.ShortDescription, new { @class = "form-control", placeholder = "Product ShortDescription" })
+                </div>
+
+                <br />
+                <!-- DESCRIPTION(CKEditor) -->
+                <div class="form-row">
+                    <div class="form-row">
+                        <label id="description">Description</label>
+                        <textarea name="Description" id="Description">Product Description</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+
+@*====== SCRIPTS Section (In Layout) =======*@
+
+@section Scripts{
+    <script>
+        //CK Editor
+        // Replace the <textarea id="editor1"> with a CKEditor 4
+        // instance, using default configuration.
+        CKEDITOR.replace('Description');
+
+
+        //IMAGE UPLOAD PREVIEW
+        //-----------------------
+        function imagePreview(input) {
+            if (input.files && input.files[0]) {
+                var fildr = new FileReader();
+                fildr.onload = function (e) {
+                    $('#imgPreview').attr('src', e.target.result);
+                }
+                fildr.readAsDataURL(input.files[0])
+            }
+        }
+
+
+        //SweetAlert2 ERROR IF Image not Uploaded
+        //-----------------------------------------
+        //If image is not uploaded in CREATE Product Form
+        //Call this function when form is submitted to check Image field validation
+        function validateInput() {
+            //Get Image Field Id
+            if (document.getElementById("uploadBox").value == "") {
+                //sweetalert2 error
+                Swal.fire(
+                    'Error!',
+                    'Please upload an Image!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

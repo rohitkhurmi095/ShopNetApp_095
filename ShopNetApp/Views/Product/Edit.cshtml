@@ -1,0 +1,173 @@
+﻿@model ShopNetApp.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<h2>Edit Product</h2>
+<br />
+
+
+<!--================-->
+<!-- Edit PRODUCT FORM -->
+<!--==================-->
+<!-- Action = /Products/Edit/{Id} | Method="Post" -->
+@using (Html.BeginForm("Edit", "Product", new { Id = @Model.Id }, FormMethod.Post, true, new { enctype = "multipart/form-data" }))
+{
+    <div class="border p-3">
+
+        <!--** PASS CategoryId as Hidden Field**-->
+        <input type="hidden" value="@Model.Id" name="ProductId" />
+
+        <div class="form-row">
+
+            <!-- Name-->
+            <div class="form-group col-md-6">
+                @Html.LabelFor(Modle => Model.Name)
+                @Html.TextBoxFor(Model => Model.Name, @Model.Name, new { @class = "form-control", placeholder = "Product Name" })
+                <!-- Error Message -->
+                <span class="text-danger">@Html.ValidationMessageFor(Model => Model.Name)</span>
+            </div>
+
+            <!-- PRICE-->
+            <div class="form-group col-md-6">
+                @Html.LabelFor(Modle => Model.Price)
+                @Html.TextBoxFor(Model => Model.Price, Model.Price.ToString(), new { @class = "form-control", placeholder = "Product Price" })
+                <!-- Error Message -->
+                <span class="text-danger">@Html.ValidationMessageFor(Model => Model.Price)</span>
+            </div>
+        </div>
+
+
+
+        <!-- DYMAMIC DROPDOWN -->
+        <div class="form-row">
+
+            <!-- CategoryId: NAME DROPDOWN -->
+            <div class="form-group col-md-6">
+                <label for="CategoryId">Category</label> <br />
+                <select class="form-control" id="CategoryId" name="CategoryId">
+                    <option value="">Please Select Category</option>
+                    @foreach (var catg in ViewBag.Categories)
+                    {
+                        <!-- Id from Categories matches which Current Product CategoryId-->
+                        if (catg.Id == Model.CategoryId)
+                        {
+                            <!--SELECTED By Default-->
+                            <option value="@catg.Id" selected="selected">@catg.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@catg.Id">@catg.Name</option>
+                        }
+                    }
+                </select>
+                <!--Error Message-->
+                <span class="text-danger">@Html.ValidationMessageFor(Model => Model.CategoryId)</span>
+            </div>
+
+            <!-- ApplicationTypeId:NAME DROPDOWN:-->
+            <div class="form-group col-md-6">
+                <label for="ApplicationTypeId">Application Type</label> <br />
+                <select class="form-control" id="ApplicationTypeId" name="ApplicationTypeId">
+                    <option value="">Please Select Application Type</option>
+                    @foreach (var appType in ViewBag.ApplicationTypes)
+                    {
+
+                        <!-- Id from ApplicationType which matches with Current Product CategoryId-->
+                        if (appType.Id == Model.ApplicationTypeId)
+                        {
+                            <!-- SELECTED by Default -->
+                            <option value="@appType.Id" selected="selected">@appType.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@appType.Id">@appType.Name</option>
+                        }
+                    }
+                </select>
+                <!-- ErrorMesssage-->
+                <span class="text-danger">@Html.ValidationMessageFor(Model => Model.ApplicationTypeId)</span>
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+
+                <!--IMAGE UPLOAD -->
+                <div class="form-row">
+
+                    <label for="Image">Image</label>
+                    <!-- File Uploader-->
+                    <input type="file" name="files" id="uploadBox" multiple class="form-control-file" onchange="imagePreview(this);" />
+
+                    <!-- Upload Preview-->
+                    @if (string.IsNullOrEmpty(Model.Image))
+                    {
+                        <p>No Image Found!</p>
+                    }
+                    else
+                    {
+                        <img id="imgPreview" alt="uploadPreview" height="150" width="150" class="mt-1" src="@WC.ImagePath@Model.Image" />
+                    }
+
+                    <br />
+                    <!--Error Message-->
+                    <span class="field-validation-valid text-danger" data-valmsg-for="Photo" data-valmsg-replace="true"></span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-row mt-3">
+                    <!-- CREATE -->
+                    <button type="submit" class="btn btn-success mx-2">Update</button>
+
+                    <!-- CANCEL-->
+                    <a class="btn btn-danger" href="@Url.Action("Index","Product")">Cancel</a>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <!--SHORT DESCRIPTION-->
+                <div class="form-row">
+                    @Html.LabelFor(Model => Model.ShortDescription)
+                    @Html.TextAreaFor(Model => Model.ShortDescription, new { @class = "form-control", placeholder = "Product ShortDescription", @value = @Model.ShortDescription })
+                </div>
+
+                <br />
+                <!-- DESCRIPTION(CKEditor) -->
+                <div class="form-row">
+                    <label id="description">Description</label>
+                    <textarea name="Description" id="Description" placeholder="Product Description">@Model.Description</textarea>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+
+@*====== SCRIPTS (CKEditor) =======*@
+@section Scripts{
+
+    <script>
+        /*----- CK Editor ------*/
+        // Replace the <textarea id="editor1"> with a CKEditor 4
+        // instance, using default configuration.
+        CKEDITOR.replace('Description');
+
+        /*--IMAGE UPLOAD PREVIEW-- */
+        function imagePreview(input) {
+            if (input.files && input.files[0]) {
+                var fildr = new FileReader();
+                fildr.onload = function (e) {
+                    $('#imgPreview').attr('src', e.target.result);
+                }
+                fildr.readAsDataURL(input.files[0])
+            }
+        }
+    </script>
+}

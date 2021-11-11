@@ -1,15 +1,12 @@
-﻿@model cloudscribe.Pagination.Models.PagedResult<Category>
-
+﻿@model cloudscribe.Pagination.Models.PagedResult<Product>;
 
 @{
     ViewData["Title"] = "Index";
-    ViewData["Controller"] = "Category";
+    ViewData["Controller"] = "Product";
     ViewData["Action"] = "Index";
 }
 
 <style>
-
-
 </style>
 
 
@@ -17,11 +14,11 @@
 <div class="row">
     <!--Add New Category Button -->
     <div class="col-sm-8">
-        <a class="btn btn-primary" href="@Url.Action("Create", "Category")">Add New Category</a>
+        <a class="btn btn-primary" href="@Url.Action("Create", "Product")">Add New Product</a>
     </div>
 
     <!-- SEARCH BOX -->
-    <form class="form-inline search-box mt-2" action="/Category/Index">
+    <form class="form-inline search-box mt-2" action="/Product/Index">
         <i class="material-icons">&#xE8B6;</i>
 
         <!--<input type="search" class="form-control" id="search" name="search" value="@ViewBag.Search" placeholder="Search...">-->
@@ -38,9 +35,12 @@
         <table class="table mt-4 table-responsive">
             <thead>
                 <tr class="table-secondary">
+                    <th>Photo</th>
                     <th>Id</th>
                     <th>Name</th>
-                    <th>Display Oders</th>
+                    <td>Price</td>
+                    <th>Category</th>
+                    <th>ApplicationType</th>
                     <th style="width:10%" colspan="3" class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -48,14 +48,17 @@
                 @foreach (var item in Model.Data)
                 {
                     <tr>
+                        <td><img src="@WC.ImagePath@item.Image" width="120" height="100" alt="@item.Name"/></td>
                         <td>@item.Id</td>
                         <td>@item.Name</td>
-                        <td>@item.DisplayOrder</td>
+                        <td>@item.Price</td>
+                        <td>@item.Category.Name</td>
+                        <td>@item.ApplicationType.Name</td>
 
                         <!-- DETAILS|Edit|Delete Buttons-->
-                        <td><a class="btn btn-light text-secondary" style="border-radius:50%;" href="/Category/Details/@item.Id"><i class="far fa-eye"></i></a></td>
-                        <td><a class="btn btn-primary text-white" style="border-radius:50%;" href="/Category/Edit/@item.Id"><i class="far fa-edit"></i></a></td>
-                        <td><a class="btn btn-danger text-white" style="border-radius:50%;" href="/Category/Delete/@item.Id"><i class="far fa-trash-alt"></i></a></td>
+                        <td><a class="btn btn-light text-secondary" style="border-radius:50%;" href="/Product/Details/@item.Id"><i class="far fa-eye"></i></a></td>
+                        <td><a class="btn btn-primary text-white" style="border-radius:50%;" href="/Product/Edit/@item.Id"><i class="far fa-edit"></i></a></td>
+                        <td><a class="btn btn-danger text-white" style="border-radius:50%;" href="/Product/Delete/@item.Id"><i class="far fa-trash-alt"></i></a></td>
                     </tr>
                 }
             </tbody>
@@ -79,8 +82,9 @@
     else
     {
         <br /><br />
-        <b class="text-danger">No category exists!</b>
+        <b class="text-danger">No product exists!</b>
     }
 </div>
+
 
 
