@@ -1,8 +1,88 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ShopNetApp.Models.ViewModel.HomeViewModel
+
+@{
+    ViewData["Title"] = "HomePage";
+    ViewData["Controller"] = "Home";
+    ViewData["Action"] = "Index";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@*-- CSS --*@
+<link href="~/css/card.css" rel="stylesheet" />
+
+
+<!-- Jumbotron -->
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">ShopNet</h1>
+        <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+    </div>
 </div>
+
+
+<!-- Container -->
+<div class="container mt-2">
+
+    <div class="col-12">
+        <h2 class="mt-4 mb-4">Products</h2>
+    </div>
+
+    <!-- CATEGORY FILTERS (javaScript)-->
+    @if (Model.Categories.Count() > 0)
+    {
+        <div class="mt-4 mb-4">
+            <h5 class="text-info">Category Filters</h5>
+            <button class="btn btn-dark">All</button>
+            @foreach (var catg in Model.Categories)
+            {
+                <button class="btn btn-outline-secondary">
+                    @catg.Name
+                </button>
+            }
+        </div>
+
+    }
+    else
+    {
+        <p class="text-danger">No Products exists!</p>
+    }
+
+
+
+    <!-- PRODUCTS -->
+    @if (Model.Products.Data.Count() > 0)
+    {
+        <div class="row">
+            @foreach (var prod in Model.Products.Data)
+            {
+                <!--Product Card PartialView-->
+                <!-- Pass Model to ProductCardPartial View-->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <partial name="_ProductCardPartial" model="prod" />
+                </div>
+            }
+        </div>
+
+
+        <br /><br />
+        <!-- PAGINATION -->
+        <!--============-->
+        <div class="clearfix">
+            <!-- PageNumber -->
+            <div class="hint-text">Page <b>@(Model.Products.TotalItems < Model.Products.PageNumber ? 0 : Model.Products.PageNumber) </b> out of <b>@ViewBag.TotalPages</b></div>
+
+            <!-- Pagination Numbers-->
+            <div class="pager pagination">
+                <!-- Pagination PartialView -->
+                <!-- Pass Model,ViewDate to PaginationPartial View-->
+                <partial name="_PaginationPartial" view-data="ViewData" model="Model.Products" class="page-item">
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <p class="text-danger">No Products exists!</p>
+    }
+</div>
+
+

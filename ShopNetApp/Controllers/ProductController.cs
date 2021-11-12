@@ -73,7 +73,7 @@ namespace ShopNetApp.Controllers
                var result = new PagedResult<Product>
                {
                     Data = products,
-                    TotalItems = _dbContext.Category.Count(),
+                    TotalItems = _dbContext.Product.Count(),
                     PageNumber = pageNumber,
                     PageSize = pageSize
                };
@@ -102,7 +102,7 @@ namespace ShopNetApp.Controllers
             }
 
             //Find category by id
-            //Find first matching category else return null(default) (firstOrDefault)
+            //Find first matching product else return null(default) (firstOrDefault)
             var product = _dbContext.Product.Include(c => c.Category).Include(a => a.ApplicationType).Where(p => p.Id == Id).FirstOrDefault();
 
             //Check if category is found

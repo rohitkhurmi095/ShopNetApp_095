@@ -1,0 +1,17 @@
+﻿<!------------------>
+<!-- Product Card -->
+<!--==============-->
+<a href="/Home/Details/@Model.Id" style="text-decoration: none;">
+    <div class="card item-card card-block m-1">
+        <h5 class="card-title text-center text-primary p-0 mb-0" style="background-color:lightgoldenrodyellow;">@Model.Name</h5>
+        <img src="@WC.ImagePath@Model.Image" alt="Photo of sunset">
+        <span class="badge p-2 border" style="background-color:lavenderblush">@Model.Category.Name</span>
+        <div class="card-body p-1">
+            <span class="text-danger"><b>Price: ₹ @Model.Price</b></span>
+            <p>@Model.ShortDescription</p>
+        </div>
+    </div>
+</a>
+
+
+

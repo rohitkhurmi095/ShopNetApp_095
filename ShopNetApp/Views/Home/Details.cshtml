@@ -1,0 +1,85 @@
+﻿@model ShopNetApp.Models.ViewModel.ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <img class="img img-responsive mt-4" src="@WC.ImagePath@Model.Product.Image" width="320" height="280" style="border:2px solid grey;" />
+            <br /><br />
+        </div>
+
+        <div class="col-md-2">
+
+        </div>
+
+        <div class="col-md-6">
+            <table class="table mt-1">
+                <tr>
+                    <th>Product Name</th>
+                    <td>@Model.Product.Name</td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td>@Model.Product.Price.ToString("c")</td>
+                </tr>
+                <tr>
+                    <th>Category</th>
+                    <td>@Model.Product.Category.Name</td>
+                </tr>
+                <tr>
+                    <th>Application Type</th>
+                    <td>@Model.Product.ApplicationType.Name</td>
+                </tr>
+            </table>
+
+            <div>
+                @if (Model.existsInCart == false)
+                {
+
+                    <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-secondary">Remove from Cart</button>
+                }
+                <a class="btn btn-success" href="@Url.Action("Index","Home")">Back</a>
+            </div>
+            <br /><br />
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table style="padding:2px;">
+                <tr>
+                    <td>
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.Product.ShortDescription))
+                            {
+                                <b>Short Description:</b>
+                                <p>@Model.Product.ShortDescription</p>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.Product.Description))
+                            {
+                                <b>Description:</b>
+                                <p>@Html.Raw(@Model.Product.Description)</p>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+

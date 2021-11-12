@@ -14,28 +14,20 @@
     <!-- Dom validations: JQUERY
          Define ValidationRules: JQuery.Validate
          Show/Hide Error Message: JQuery.validate.unoburtsive -->
-    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 
-    <!-- SweetAlert2-->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- CKEditor-->
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-
+    <!--BOOTSTRAP-->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <!--CSS-->
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/table.css" rel="stylesheet" />
 
-    <!--BOOTSTRAP-->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!--SCRIPTS-->
-    <script src="~/js/table.js"></script>
 </head>
 <body>
+
+    @*<-----NAVBAR ------>*@
+    @*====================*@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -44,45 +36,72 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <!-- HOME -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <!-- CATEGORY -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
-                        </li>
-                        <!-- ApplicationType -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ApplicationType" asp-action="Index">Application Type</a>
-                        </li>
-                        <!-- PRODUCT -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+
+                        <!-- Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Content Management
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <!-- CATEGORY -->
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
+                                <!-- ApplicationType -->
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ApplicationType" asp-action="Index">Application Type</a>
+                                <!-- PRODUCT -->
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+                            </div>
                         </li>
                     </ul>
+
                 </div>
             </div>
         </nav>
     </header>
+
+
+
+    @*<---MAIN CONTENT--->*@
+    @*====================*@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <!--<footer class="border-top footer text-muted">
+
+    @*<-----FOOTER ------>*@
+    @*====================*@
+    <br /><br /><br /><br />
+    <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - ShopNetApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>-->
+    </footer>
 
 
+
+    @*====================*@
+    @*<-----SCRIPTS ----->*@
+    @*====================*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- SweetAlert2-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- CKEditor-->
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+    <!--SCRIPTS-->
+    <script src="~/js/table.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>
