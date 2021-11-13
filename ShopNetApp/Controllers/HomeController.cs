@@ -29,40 +29,13 @@ namespace ShopNetApp.Controllers
         //==========================
         //ALL PRODUCTS With Filters
         //==========================
-        public IActionResult Index(int pageNumber=1,int pageSize=6)
+        public IActionResult Index()
         {
-            //ProductsList
-            List<Product> products;
-
-            //PAGINATION
-            //-----------
-            //cloudscribe.web.pagination
-            //query = query.Skip(pageSize*pageNumber).Take(PageSize).AsNoTracking().ToList();
-            //pagedList<T> result = new PagedList<T>(Data,TotalItems,PageNumber,PageSize)
-            //TotalPages = TotalItems/PageSize
-            var offset = (pageSize * pageNumber) - pageSize;
-
-            //Get all products from Db
-            products = _dbContext.Product.Include(c => c.Category).Include(a => a.ApplicationType).AsNoTracking().Skip(offset).Take(pageSize).ToList();
-
-            //PAGED LIST (Products)
-            //-----------
-            var result = new PagedResult<Product>
-            {
-                Data = products,
-                TotalItems = _dbContext.Product.Count(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
-
-            //TotalPages = TotalItems/PageSize
-            ViewBag.TotalPages = (int)Math.Ceiling(_dbContext.Product.Count() / (double)pageSize);
-
             //HomeViewModel
             //Return All Products(card)+Categories(filter) -> Home
             HomeViewModel homeView = new HomeViewModel()
             {
-                Products = result,
+                Products = _dbContext.Product.Include(c => c.Category).Include(a => a.ApplicationType).AsNoTracking().ToList(),
                 Categories = _dbContext.Category.ToList()
             };
 

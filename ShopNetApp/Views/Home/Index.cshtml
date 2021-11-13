@@ -31,10 +31,11 @@
     {
         <div class="mt-4 mb-4">
             <h5 class="text-info">Category Filters</h5>
-            <button class="btn btn-dark">All</button>
+            <button class="btn btn-dark filter-button" data-filter="all">All</button>
             @foreach (var catg in Model.Categories)
             {
-                <button class="btn btn-outline-secondary">
+                <!--replace ' ' in categoryName with '_'-->
+                <button class="btn btn-outline-secondary filter-button" data-filter="@catg.Name.Replace(' ','_')">
                     @catg.Name
                 </button>
             }
@@ -48,41 +49,61 @@
 
 
 
+
+
     <!-- PRODUCTS -->
-    @if (Model.Products.Data.Count() > 0)
+    @if (Model.Products.Count() > 0)
     {
         <div class="row">
-            @foreach (var prod in Model.Products.Data)
+            @foreach (var prod in Model.Products)
             {
                 <!--Product Card PartialView-->
                 <!-- Pass Model to ProductCardPartial View-->
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12 col-md-6 col-lg-4 filter @prod.Category.Name.Replace(' ','_')">
                     <partial name="_ProductCardPartial" model="prod" />
                 </div>
             }
         </div>
-
-
-        <br /><br />
-        <!-- PAGINATION -->
-        <!--============-->
-        <div class="clearfix">
-            <!-- PageNumber -->
-            <div class="hint-text">Page <b>@(Model.Products.TotalItems < Model.Products.PageNumber ? 0 : Model.Products.PageNumber) </b> out of <b>@ViewBag.TotalPages</b></div>
-
-            <!-- Pagination Numbers-->
-            <div class="pager pagination">
-                <!-- Pagination PartialView -->
-                <!-- Pass Model,ViewDate to PaginationPartial View-->
-                <partial name="_PaginationPartial" view-data="ViewData" model="Model.Products" class="page-item">
-            </div>
-        </div>
-
     }
     else
     {
         <p class="text-danger">No Products exists!</p>
     }
 </div>
+    
+    
 
 
+@*====== SCRIPTS Section (In Layout) =======*@
+@section Scripts{
+    <script>
+
+        //Toggle filter-button(class) based on selection
+        //***********************************************
+        //.filter = class on Product card div
+        //filter-button = class on category button
+        //data-filter = category button attribute
+        $(document).ready(function(){
+            $(".filter-button").click(function(){
+                var value = $(this).attr("data-filter");
+                //console.log(value);
+
+                if (value == "all") {
+                    //Show all results
+                    $(".filter").show("1000");
+
+                    //console.log('show all filter!');
+                }
+                else {
+                    //dont show all results
+                    $(".filter").not("."+value).hide("3000");
+                    //show only filter producrs
+                    $(".filter").filter("." + value).show("3000");
+
+                    //console.log('other filter!')
+                }
+            });
+        });
+
+    </script>
+}

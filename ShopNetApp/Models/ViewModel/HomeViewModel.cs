@@ -9,7 +9,7 @@ namespace ShopNetApp.Models.ViewModel
     public class HomeViewModel
     {
         //Products
-        public PagedResult<Product> Products { get; set; }
+        public List<Product> Products { get; set; }
         //Categories
         public List<Category> Categories { get; set; }
     }
