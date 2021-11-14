@@ -4,6 +4,13 @@
     ViewData["Title"] = "Details";
 }
 
+<!-- /Home/Details/Post-->
+<form action="/Home/Details" method="post">
+
+    <!-- Pass Current ProductId as hiddenField-->
+    <!-- To Check if current Product Exists in Cart or not-->
+    <input type="hidden" value="@Model.Product.Id" name="ProductId"/>
+
 
     <div class="row">
         <div class="col-md-4">
@@ -35,15 +42,17 @@
                 </tr>
             </table>
 
+            <!-- SHOPPING CART | Cancel Buttons-->
             <div>
-                @if (Model.existsInCart == false)
+                @if(Model.existsInCart)
                 {
+                    <!-- REMOVE FROM CART (RemoveFromCart/ProductId)-->
+                    <a asp-action="RemoveFromCart" asp-route-id="@Model.Product.Id" class="btn btn-secondary">Remove from Cart</a>
 
-                    <button type="submit" class="btn btn-secondary">Add to Cart</button>
-                }
-                else
-                {
-                    <button type="submit" class="btn btn-secondary">Remove from Cart</button>
+                }else{
+
+                    <!-- ADD TO CART (Post: Details/Id)-->
+                    <button type="submit" asp-route-id="@Model.Product.Id" class="btn btn-secondary">Add to Cart</button>
                 }
                 <a class="btn btn-success" href="@Url.Action("Index","Home")">Back</a>
             </div>
@@ -80,6 +89,9 @@
             </table>
         </div>
     </div>
+
+</form>
+
 
 
 

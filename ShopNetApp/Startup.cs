@@ -35,6 +35,25 @@ namespace ShopNetApp
             //Connection string from appsettings.json
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
+            //________________
+            //Session Service (Set manually)
+            //----------------
+            //You cannot view the session state variable at client side.
+            //Session state is stored at server, and Client browser only knows SessionID which is stored in cookie or URL.
+
+            //To access session in non-controller class (via Dependency Injection)
+            services.AddHttpContextAccessor();
+            //Session options
+            services.AddSession(options =>
+            {
+                //Destroy session after 10min (Default = 20min)
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                //CookieOptions
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            //---------------------
+
             //Cloudscribe.web.pagination
             //---------------------------
             services.AddCloudscribePagination();
@@ -65,6 +84,10 @@ namespace ShopNetApp
             app.UseRouting();
 
             app.UseAuthorization();
+
+            //--- Session Middleware -----
+            app.UseSession();
+         
 
             app.UseEndpoints(endpoints =>
             {

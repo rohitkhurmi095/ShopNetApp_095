@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿<!--===== SESSION =====-->
+<!-- Using Statements -->
+@using Microsoft.AspNetCore.Http
+<!-- using services in class/controller => DependencyInjection(constructor)-->
+<!-- using services in view => inject -->
+<!--Inject Services -->
+@inject IHttpContextAccessor HttpContextAccessor
+<!--Session Extensions(Utilities)-->
+@using ShopNetApp.Utilities
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -37,6 +48,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <!-- Items -->
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <!-- HOME -->
@@ -44,7 +56,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
+                        <!-------------->
                         <!-- Dropdown -->
+                        <!-------------->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Content Management
@@ -61,6 +75,31 @@
                     </ul>
 
                 </div>
+
+                <!--=============--->
+                <!-- ShoppingCART -->
+                <!--==============-->
+                <div style="float:right">
+                    <!-- If Session Exists-->
+                    @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart) != null)
+                    {
+                        <!--Go to CartPage: Cart/Index [cart(items)]-->
+                        <a class="nav-link" asp-controller="Cart" asp-action="Index">
+                            <!-- Count ShoppingCART items -->
+                            @{var count = HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart).Count;}
+                            <i class="fas fa-shopping-cart"></i>&nbsp;(@count)
+                        </a>
+                    }
+                    else
+                    {   <!-- If Session does not exists [cart(0)]-->
+                        <!-- ShoppingCartItems = 0 -->
+                        <a class="nav-link" asp-controller="Cart" asp-action="Index">
+                            <i class="fas fa-shopping-cart"></i>&nbsp;(0)
+                        </a>
+                    }
+                </div>
+                <!------------------>
+
             </div>
         </nav>
     </header>

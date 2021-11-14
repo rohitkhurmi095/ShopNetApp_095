@@ -11,5 +11,9 @@ namespace ShopNetApp
     {
         //IMAGE Path: uploaded Images will be saved here
         public static string ImagePath = @"\images\product\";
+
+
+        //ShoppingCartSession (key to access session)
+        public static string SessionCart = "ShoppingCartSession";
     }
 }
