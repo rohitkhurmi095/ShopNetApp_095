@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,6 +55,13 @@ namespace ShopNetApp
             });
             //---------------------
 
+            //__________________
+            //IDENTITY Services
+            //------------------
+            services.AddDefaultIdentity<IdentityUser>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //------------------
+
             //Cloudscribe.web.pagination
             //---------------------------
             services.AddCloudscribePagination();
@@ -83,14 +91,22 @@ namespace ShopNetApp
 
             app.UseRouting();
 
+            //Authentication|Authorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
             //--- Session Middleware -----
             app.UseSession();
          
 
+            //ROUTING
+            //========
             app.UseEndpoints(endpoints =>
             {
+                //Identity Routing (Blazor)
+                endpoints.MapRazorPages();
+
+                //MVC Routing (MVC)
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

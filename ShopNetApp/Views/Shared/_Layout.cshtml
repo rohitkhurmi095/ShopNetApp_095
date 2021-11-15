@@ -91,7 +91,7 @@
                         </a>
                     }
                     else
-                    {   <!-- If Session does not exists [cart(0)]-->
+                    { <!-- If Session does not exists [cart(0)]-->
                         <!-- ShoppingCartItems = 0 -->
                         <a class="nav-link" asp-controller="Cart" asp-action="Index">
                             <i class="fas fa-shopping-cart"></i>&nbsp;(0)
@@ -99,6 +99,15 @@
                     }
                 </div>
                 <!------------------>
+
+
+                <!--=========================--->
+                <!-- IDENTITY(Register|Login) -->
+                <!--==========================-->
+                <div>
+                    <partial name="_LoginPartial" />
+                </div>
+                <!------------------------------>
 
             </div>
         </nav>

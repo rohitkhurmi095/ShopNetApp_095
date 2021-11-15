@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShopNetApp.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace ShopNetApp.Data
     //EntityFramework Migrations:
     //add-migration "migrationName" -o Data/Migrations
     //update-database
-    public class ApplicationDbContext : DbContext
+
+    //Changing To Idnetity Db
+    public class ApplicationDbContext : IdentityDbContext
     {
         //Pass ApplicationDbContext options -> EF Core DbContext
         //query data using DbContext instance
