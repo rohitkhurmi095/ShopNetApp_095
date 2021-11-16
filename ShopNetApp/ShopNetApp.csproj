@@ -39,8 +39,6 @@
     <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\product\" />
-  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/apple-app-site-association.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

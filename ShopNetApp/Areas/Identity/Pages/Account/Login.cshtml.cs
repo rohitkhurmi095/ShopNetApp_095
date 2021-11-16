@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Net.Mail;
 
 namespace ShopNetApp.Areas.Identity.Pages.Account
 {
@@ -40,27 +41,35 @@ namespace ShopNetApp.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
+        /*_______________________________________________________________ 
+         Allow your users to login with both the UserName or the EmailId
+        ________________________________________________________________*/
         public class InputModel
         {
+            //Make Email Field text 
+            //----------------------
+            //Username | Email
             [Required]
-            [EmailAddress]
+            [Display(Name = "Email / Username")]
             public string Email { get; set; }
 
+            //Password
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
+            //TickBox
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
 
+       
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
-
             returnUrl = returnUrl ?? Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
@@ -71,15 +80,59 @@ namespace ShopNetApp.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+
+
+
+        //**FUNCTION**
+        //---------------------------------------------------------------
+        //CHECK If Data Entered is valid Email or not 
+        //---------------------------------------------------------------
+        public bool IsValidEmail(string emailAddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailAddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+        //-----------------------------------------------------
+
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)
             {
+                //---------------------------------------
+                //Check if Entered data is valid Email?
+                //--------------------------------------
+                var username = Input.Email;
+                //If valid data (Email)
+                if (IsValidEmail(Input.Email))
+                {
+                    //Get UserObject associated with Email
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
+                    //If UserObj != null => GetUsername
+                    if (user != null)
+                    {
+                        //username
+                        username = user.UserName;
+                    }
+                    
+                }
+
+                //--------------------------------
+                //PASS Username -> _signInManager (Instead of Email)
+                //-------------------------------
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

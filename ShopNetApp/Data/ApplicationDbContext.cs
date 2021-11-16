@@ -29,8 +29,16 @@ namespace ShopNetApp.Data
         //======
         //DbSet (Tables in Database)
         //======
+        //SHOP 
+        //-----
         public DbSet<Category> Category { get; set; }
         public DbSet<ApplicationType> ApplicationType { get; set; }
         public DbSet<Product> Product { get; set; }
+
+        //IDENTITY 
+        //---------
+        //dbo.AspNet.Users
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
     }
 }

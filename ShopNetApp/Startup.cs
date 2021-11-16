@@ -59,7 +59,9 @@ namespace ShopNetApp
             //IDENTITY Services
             //------------------
             services.AddDefaultIdentity<IdentityUser>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                     .AddDefaultTokenProviders()                         //provides tokens when user forgets password
+                     .AddDefaultUI()                                     //for Identity Pages
+                    .AddEntityFrameworkStores<ApplicationDbContext>();  //Add tables to same Db as EntityFramework
             //------------------
 
             //Cloudscribe.web.pagination

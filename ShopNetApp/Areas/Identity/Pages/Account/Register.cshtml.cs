@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using ShopNetApp.Models;
 
 namespace ShopNetApp.Areas.Identity.Pages.Account
 {
@@ -45,17 +47,35 @@ namespace ShopNetApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            //FirstName (model)
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            //LastName (model)
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            //Email
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            //PhoneNumber (identity)
+            [Required]
+            [Display(Name = "Phone Number")]
+            public string PhoneNumber { get; set; }
+
+            //Password
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
+            //ConfirmPassword
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -74,7 +94,28 @@ namespace ShopNetApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                //_______________________________________
+                //1) GENERATING Username From Email Address
+                //_______________________________________
+                //Default UserName = Input.Email
+                //By default, in Identity, the username and Email is the same.
+                //Now, in the login form, the applicaion expects the username in the email field.
+                //But our usename is not longer an email id
+                //**Show UserName instead of Email in Navbar
+                MailAddress address = new MailAddress(Input.Email);
+                string userName = address.User;
+
+                //Registeration Fields
+                //---------------------
+                //IdentityUser -> ApplicationUser
+                var user = new ApplicationUser{
+                    UserName = userName, 
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    PhoneNumber = Input.PhoneNumber
+                };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
